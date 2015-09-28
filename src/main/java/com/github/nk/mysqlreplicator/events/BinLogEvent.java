@@ -1,27 +1,31 @@
 package com.github.nk.mysqlreplicator.events;
 
+import com.github.nk.mysqlreplicator.services.TableInfo;
+
 public abstract class BinLogEvent {
 
     public enum Type {
         insert, update, delete
     }
 
-    private final String db;
-    private final String table;
     private final Type event;
+    private final TableInfo tInfo;
 
-    public BinLogEvent(String db, String table, Type event) {
-        this.db = db;
-        this.table = table;
+    public BinLogEvent(TableInfo tInfo, Type event) {
+        this.tInfo = tInfo;
         this.event = event;
     }
 
     public String getDb() {
-        return db;
+        return tInfo.getData().getDatabase();
     }
 
     public String getTable() {
-        return table;
+        return tInfo.getData().getTable();
+    }
+
+    public String getPrimaryKey() {
+        return tInfo.getPrimaryKey();
     }
 
     public Type getEvent() {

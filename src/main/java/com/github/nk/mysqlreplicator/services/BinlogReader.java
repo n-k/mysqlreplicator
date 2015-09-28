@@ -119,7 +119,7 @@ public class BinlogReader {
             List<ColInfo> colInfos = tInfo.getColInfos();
             for (Serializable[] row : rows) {
                 Map<String, Object> converted = convertRow(colInfos, includedColumns, row);
-                InsertEvent ie = new InsertEvent(tInfo.getData().getDatabase(), tInfo.getData().getTable(), converted);
+                InsertEvent ie = new InsertEvent(tInfo, converted);
                 eventQueue.offer(ie);
             }
         }
@@ -134,8 +134,7 @@ public class BinlogReader {
             for (Entry<Serializable[], Serializable[]> row : rows) {
                 Map<String, Object> before = convertRow(cols, ured.getIncludedColumnsBeforeUpdate(), row.getKey());
                 Map<String, Object> after = convertRow(cols, ured.getIncludedColumns(), row.getValue());
-                UpdateEvent ue = new UpdateEvent(tInfo.getData().getDatabase(), tInfo.getData().getTable(), before,
-                        after);
+                UpdateEvent ue = new UpdateEvent(tInfo, before, after);
                 eventQueue.offer(ue);
             }
         }
@@ -150,7 +149,7 @@ public class BinlogReader {
             List<ColInfo> cols = tInfo.getColInfos();
             for (Serializable[] row : rows) {
                 Map<String, Object> converted = convertRow(cols, includedColumns, row);
-                DeleteEvent de = new DeleteEvent(tInfo.getData().getDatabase(), tInfo.getData().getTable(), converted);
+                DeleteEvent de = new DeleteEvent(tInfo, converted);
                 eventQueue.offer(de);
             }
         }

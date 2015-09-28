@@ -4,11 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class FactoryBeansFactory {
+public class FactoryBeans {
 
     @Bean
-    public EventWriterFactoryBean getEventConsumerFactory() {
-        return new EventWriterFactoryBean();
+    public EventWriterFacoryFactoryBean getEventConsumerFactoryFactory() {
+        return new EventWriterFacoryFactoryBean();
     }
 
     @Bean

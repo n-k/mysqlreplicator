@@ -10,9 +10,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.github.nk.mysqlreplicator.config.EventWriterFactory;
 import com.github.nk.mysqlreplicator.events.BinLogEvent;
 import com.github.nk.mysqlreplicator.services.BinlogReader;
-import com.github.nk.mysqlreplicator.services.EventWriter;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
@@ -25,7 +25,7 @@ public class Application implements CommandLineRunner {
     private BlockingQueue<BinLogEvent> eventQueue;
 
     @Autowired
-    private EventWriter consumer;
+    private EventWriterFactory consumerFactory;
 
     @Value("${writer.threads}")
     private int writerThreads;
@@ -38,20 +38,7 @@ public class Application implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // TODO: don't use daemon threads, add proper start/stop
         for (int i = 0; i < writerThreads; i++) {
-            Thread thread = new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    while (true) {
-                        try {
-                            BinLogEvent event = eventQueue.take();
-                            consumer.consume(event);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
+            Thread thread = new Thread(consumerFactory.getEventWriter());
             thread.setDaemon(true);
             thread.start();
         }

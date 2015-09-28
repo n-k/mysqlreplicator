@@ -2,12 +2,14 @@ package com.github.nk.mysqlreplicator.events;
 
 import java.util.Map;
 
+import com.github.nk.mysqlreplicator.services.TableInfo;
+
 public class DeleteEvent extends BinLogEvent {
 
     private final Map<String, Object> data;
 
-    public DeleteEvent(String db, String table, Map<String, Object> data) {
-        super(db, table, Type.delete);
+    public DeleteEvent(TableInfo tInfo, Map<String, Object> data) {
+        super(tInfo, Type.delete);
         this.data = data;
     }
 

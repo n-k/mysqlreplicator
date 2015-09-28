@@ -14,6 +14,10 @@ public abstract class AbstractAutowiringFactoryBean<T> extends AbstractFactoryBe
         this.applicationContext = applicationContext;
     }
 
+    protected ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
     @Override
     protected final T createInstance() throws Exception {
         final T instance = doCreateInstance();
