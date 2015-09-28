@@ -82,7 +82,9 @@ public class ESWriter extends EventWriter {
     }
 
     private void delete(String index, String doc, String id) {
-
+        getClient().prepareDelete(index, doc, id)
+                .execute()
+                .actionGet();
     }
 
     private void upsert(String index, String doc, String id, Map<String, Object> data) throws Exception {
