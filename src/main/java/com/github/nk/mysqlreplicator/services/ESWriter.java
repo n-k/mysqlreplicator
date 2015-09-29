@@ -71,10 +71,11 @@ public class ESWriter extends EventWriter {
                 return;
             }
             String pk = String.valueOf(pkObj);
+            String id = db + "_" + table + "_" + pk;
             if (event.getEvent() == Type.delete) {
-                delete(db, table, pk);
+                delete(db, table, id);
             } else {
-                upsert(db, table, pk, data);
+                upsert(db, table, id, data);
             }
         } catch (Exception e) {
             e.printStackTrace();

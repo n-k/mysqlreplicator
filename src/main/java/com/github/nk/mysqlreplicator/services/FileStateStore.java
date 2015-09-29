@@ -15,10 +15,19 @@ public class FileStateStore implements StateStore {
 
     @Value("${statestore.file.location}")
     private String location;
+    
+    @Value("${statestore.writenth}")
+    private int writeNth;
+    
+    private volatile int count = 0;
 
     @Override
     public void saveState(String binlogFileName, long index) throws Exception {
-        writeFileContents(location, binlogFileName + "||||" + index);
+        count++;
+        if (count % writeNth == 0) {
+            count = 0;
+            writeFileContents(location, binlogFileName + "||||" + index);
+        }
     }
 
     @Override

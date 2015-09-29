@@ -158,6 +158,9 @@ public class BinlogReader {
     private void handleTableRemap(TableMapEventData tmed) {
         long tableId = tmed.getTableId();
         synchronized (this) {
+            if (tableInfoMap.containsKey(tableId)) {
+                return;
+            }
             try {
                 tableInfoMap.put(tableId, TableInfo.getInfo(host, port, username, password, tmed));
             } catch (Exception e) {
