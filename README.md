@@ -9,3 +9,5 @@ Changed/added rows are converted to json, then inserted into elasticsearch.
 
 
 Strategy for creation of document ids can be configured to use primary key in mysql
+
+Licensed under WTFPL. Any files/information in this project are distributed under the terms of WTFPL, included in license-WTFPL.txt.

@@ -83,7 +83,7 @@ public class QueuingEventListener implements EventListener {
 		if (tInfo != null) {
 			List<ColumnInfo> colInfos = tInfo.getColInfos();
 			for (Serializable[] row : rows) {
-				Map<String, Object> converted = BinlogReader.convertRow(colInfos, includedColumns, row);
+				Map<String, Object> converted = convertRow(colInfos, includedColumns, row);
 				InsertEvent ie = new InsertEvent(tInfo, converted);
 				eventQueue.offer(ie);
 			}
@@ -97,9 +97,9 @@ public class QueuingEventListener implements EventListener {
 		if (tInfo != null) {
 			List<ColumnInfo> cols = tInfo.getColInfos();
 			for (Entry<Serializable[], Serializable[]> row : rows) {
-				Map<String, Object> before = BinlogReader.convertRow(cols, ured.getIncludedColumnsBeforeUpdate(),
+				Map<String, Object> before = convertRow(cols, ured.getIncludedColumnsBeforeUpdate(),
 						row.getKey());
-				Map<String, Object> after = BinlogReader.convertRow(cols, ured.getIncludedColumns(), row.getValue());
+				Map<String, Object> after = convertRow(cols, ured.getIncludedColumns(), row.getValue());
 				UpdateEvent ue = new UpdateEvent(tInfo, before, after);
 				eventQueue.offer(ue);
 			}
@@ -114,7 +114,7 @@ public class QueuingEventListener implements EventListener {
 		if (tInfo != null) {
 			List<ColumnInfo> cols = tInfo.getColInfos();
 			for (Serializable[] row : rows) {
-				Map<String, Object> converted = BinlogReader.convertRow(cols, includedColumns, row);
+				Map<String, Object> converted = convertRow(cols, includedColumns, row);
 				DeleteEvent de = new DeleteEvent(tInfo, converted);
 				eventQueue.offer(de);
 			}
@@ -133,5 +133,31 @@ public class QueuingEventListener implements EventListener {
 				log.error("Couldn't refresh table info", e);
 			}
 		}
+	}
+	
+	private static Map<String, Object> convertRow(List<ColumnInfo> cols, 
+			BitSet includedCols, 
+			Serializable[] values) {
+		Map<String, Object> map = new HashMap<>();
+
+		int size = cols.size();
+		for (int i = 0; i < size; i++) {
+			ColumnInfo colInfo = cols.get(i);
+			if (includedCols.get(i)) {
+				map.put(colInfo.getName(), concertObject(colInfo, values[i]));
+			} else {
+				map.put(colInfo.getName(), null);
+			}
+		}
+		return map;
+	}
+
+	private static Object concertObject(ColumnInfo colInfo, Serializable value) {
+		String typeLowerCase = colInfo.getTypeLowerCase();
+		if ("enum".equals(typeLowerCase)) {
+			int idx = (int) value;
+			return idx <= 0 ? null : colInfo.getEnumValues().get(idx - 1);
+		}
+		return value;
 	}
 }

@@ -1,11 +1,6 @@
 package com.github.nk.mysqlreplicator.services;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 import javax.annotation.PostConstruct;
@@ -75,30 +70,6 @@ public class BinlogReader implements BinlogPositionProvider, TableInfoProvider {
 
 	public void start() throws IOException {
 		client.connect();
-	}
-
-	static Map<String, Object> convertRow(List<ColumnInfo> cols, BitSet includedCols, Serializable[] values) {
-		Map<String, Object> map = new HashMap<>();
-
-		int size = cols.size();
-		for (int i = 0; i < size; i++) {
-			ColumnInfo colInfo = cols.get(i);
-			if (includedCols.get(i)) {
-				map.put(colInfo.getName(), concertObject(colInfo, values[i]));
-			} else {
-				map.put(colInfo.getName(), null);
-			}
-		}
-		return map;
-	}
-
-	private static Object concertObject(ColumnInfo colInfo, Serializable value) {
-		String typeLowerCase = colInfo.getTypeLowerCase();
-		if ("enum".equals(typeLowerCase)) {
-			int idx = (int) value;
-			return idx <= 0 ? null : colInfo.getEnumValues().get(idx - 1);
-		}
-		return value;
 	}
 
 	private class LCListener implements LifecycleListener {
