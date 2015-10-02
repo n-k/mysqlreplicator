@@ -45,4 +45,16 @@ public class MemoryStateStore implements StateStore {
         return new BinlogState(filename, index);
     }
 
+	public void setWriteNth(int writeNth) {
+		this.writeNth = writeNth;
+	}
+
+	public void setInitFileName(String initFileName) {
+		this.initFileName = initFileName;
+	}
+
+	public void setInitIndex(int initIndex) {
+		this.initIndex = initIndex;
+	}
+
 }
