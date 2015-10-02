@@ -1,4 +1,4 @@
-Build status: <img src="https://travis-ci.org/n-k/mysqlreplicator.svg" title="Build Status Images">
+[![Build Status](https://travis-ci.org/n-k/mysqlreplicator.svg?branch=master)](https://travis-ci.org/n-k/mysqlreplicator)
 
 # Mysql to elasticsearch replicator
 
