@@ -13,10 +13,10 @@ import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 public class TableInfo {
 
     private final TableMapEventData data;
-    private final List<ColInfo> colInfos;
+    private final List<ColumnInfo> colInfos;
     private final String primaryKey;
 
-    private TableInfo(TableMapEventData data, List<ColInfo> colInfos, String primaryKey) {
+    public TableInfo(TableMapEventData data, List<ColumnInfo> colInfos, String primaryKey) {
         this.data = data;
         this.colInfos = colInfos;
         this.primaryKey = primaryKey;
@@ -26,7 +26,7 @@ public class TableInfo {
         return data;
     }
 
-    public List<ColInfo> getColInfos() {
+    public List<ColumnInfo> getColInfos() {
         return colInfos;
     }
 
@@ -46,16 +46,16 @@ public class TableInfo {
         }
         result.close();
         ResultSet colsRS = meta.getColumns(null, null, data.getTable(), null);
-        List<ColInfo> columns = new ArrayList<ColInfo>();
+        List<ColumnInfo> columns = new ArrayList<ColumnInfo>();
 
         while (colsRS.next()) {
             String name = colsRS.getString("COLUMN_NAME");
             String typeLowerCase = colsRS.getString("TYPE_NAME").toLowerCase();
             if (typeLowerCase == "enum") {
                 List<String> enumValues = getEnumValues(con, data.getTable(), name);
-                columns.add(new ColInfo(name, typeLowerCase, enumValues));
+                columns.add(new ColumnInfo(name, typeLowerCase, enumValues));
             } else {
-                columns.add(new ColInfo(name, typeLowerCase, new ArrayList<>()));
+                columns.add(new ColumnInfo(name, typeLowerCase, new ArrayList<>()));
             }
         }
         colsRS.close();

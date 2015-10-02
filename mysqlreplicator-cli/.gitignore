@@ -1,0 +1,12 @@
+/.settings
+/.classpath
+/.project
+/*.iml
+/target
+/bin
+/.*.swp
+/.idea
+/dependency-reduced-pom.xml
+/data
+/binlog_position
+

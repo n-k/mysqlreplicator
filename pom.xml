@@ -4,7 +4,7 @@
 	<groupId>com.github.nk</groupId>
 	<artifactId>mysqlreplicator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
@@ -36,44 +36,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-cli</artifactId>
-			<version>1.2.5.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.shyiko</groupId>
-			<artifactId>mysql-binlog-connector-java</artifactId>
-			<version>0.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.elasticsearch</groupId>
-			<artifactId>elasticsearch</artifactId>
-			<version>1.7.2</version>
-		</dependency>
-	</dependencies>
-
 	<build>
-		<!-- Turn on filtering by default for application properties -->
 		<resources>
 			<resource>
 				<directory>${basedir}/src/main/resources</directory>
@@ -89,9 +52,6 @@
 					<exclude>**/application.yml</exclude>
 					<exclude>**/application.properties</exclude>
 				</excludes>
-			</resource>
-			<resource>
-				<directory>${basedir}/src/main/webapp</directory>
 			</resource>
 		</resources>
 		<pluginManagement>
@@ -246,19 +206,9 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
+	<modules>
+		<module>mysqlreplicator-core</module>
+		<module>mysqlreplicator-cli</module>
+	</modules>
 </project>
