@@ -1,3 +1,19 @@
 language: java
 jdk:
   - oraclejdk8
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "XUYYkFybT7CFmYCVaP1Eoog1sVaHKzGsjjzarqdhwh3CVLBzhJGJCBqw51jml6UhyKzts5daMDB8z4/F9IfNStX8vwR6xwQHX+YzU/dkZEwymS30nWNve5ZhBnbn6rSjsJXEjFjhHz6GvA2i8/pp2RD372kd2nQOnVi8O7yRuiQ6+GQ80eMnalHX1FdUkcKZtuXPPU5L1rAP9Xcsw/CHMkMTn3RnkPPvz37n2aUK2Wrw4ShgSRkMzlkCgM/ji0NYEmbw+xB0m/etPJJknJWlHit7QbB1jsDnXddLFRY093mZIweG6nAY3dwiIPtC+U8lgFPoRNBqSGVjxg9dYhuWRRRoSfk0SCo6UnWzz6bBoQCLWeLQIdAHhKvyd09Cpa7Ho9ukXVKOH40cWV9J0iOHZyAh+s8BvIqU2rFEh6WEkwL+z1S26N+uoiqlrWv6E2au2xsAs4jXPqroyw5IUfokFj3qyC3pIkmydAG2ZTMwwvK+xAzp97gCXbRmmEjHGrNCRFVO0ozKRI4l8oiKCw9Ahkhg6tbohFNWuyyG4hGAgAWUhbQvaOGj2afehtsGhMvzBOGH4tvp48Qw7zaxkpzR4qm3X9GSaOPjmVAMXYYLFtf+kZ5mr+N/kE9iCPmgaDMDHxKPQUGqLN2FtahnVrh5cRfHO5cjqNy4p8WakCN4j6E="
+
+addons:
+  coverity_scan:
+    project:
+      name: "n-k/mysqlreplicator"
+      description: "Build submitted via Travis CI"
+    notification_email: nipunkumar06@gmail.com
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn -DskipTests=true compile"
+    branch_pattern: coverity_scan
